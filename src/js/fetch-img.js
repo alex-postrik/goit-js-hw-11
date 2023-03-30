@@ -1,8 +1,18 @@
 import axios from 'axios';
-export { fetchImages };
+import Notiflix from 'notiflix';
+
+const KEY = '34871467-f144c0dca622e0cd08d0dd1ad';
 
 axios.defaults.baseURL = 'https://pixabay.com/api/';
-const KEY = '34871467-f144c0dca622e0cd08d0dd1ad';
+axios.interceptors.response.use(
+  response => {
+    return response;
+  },
+  error => {
+    Notiflix.Notify.failure('nok');
+    return Promise.reject.error(error);
+  }
+);
 
 async function fetchImages(query, page, perPage) {
   const response = await axios.get(
@@ -10,3 +20,4 @@ async function fetchImages(query, page, perPage) {
   );
   return response;
 }
+export { fetchImages };
