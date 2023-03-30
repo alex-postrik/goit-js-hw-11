@@ -1,10 +1,12 @@
 .search-container {
-    background: #151515;
-    height: 100%;
+background: #151515;
+height: 180px;
     position: absolute;
-    text-align: center;
+z-index: 20;
+text-align: center;
     width: 100%;
 }
+
 
 .search-container:before,
 .search-container:after {
@@ -141,3 +143,37 @@
         box-shadow: 0 0 20px rgba(0, 255, 0, .6), inset 0 0 10px rgba(0, 255, 0, .4), 0 2px 0 #000;
     }
 }
+.conteiner-gallery {
+
+    height: 100%;
+        width: 100%;
+    
+        display: flex;
+        flex-direction: row;
+        position: absolute;
+        z-index: 1;
+        background: #151515;
+    }
+    
+    .gallery {
+    
+        height: 100%;
+        text-align: center;
+        width: 100%;
+    }
+    
+    .gallery__link {
+        margin-top: 20px;
+        margin-left: 20px;
+        min-width: 320px;
+        flex-basis: calc((100% - 80px) / 4);
+        border: none;
+        border-radius: 10px;
+        overflow: hidden;
+        transition: all 0.3s;
+    }
+    
+    .gallery__link:hover,
+    .gallery__link:focus {
+        transform: scale(1.05);
+    }

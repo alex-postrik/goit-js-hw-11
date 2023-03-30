@@ -9,8 +9,8 @@ axios.interceptors.response.use(
     return response;
   },
   error => {
-    Notiflix.Notify.failure('nok');
-    return Promise.reject.error(error);
+    Notiflix.Notify.failure('Something went wrong. Please try again later.');
+    return Promise.reject(error);
   }
 );
 
@@ -18,6 +18,7 @@ async function fetchImages(query, page, perPage) {
   const response = await axios.get(
     `?key=${KEY}&q=${query}&image_type=photo&orientation=horizontal&safesearch=true&page=${page}&per_page=${perPage}`
   );
-  return response;
+  return response.data;
 }
+
 export { fetchImages };
