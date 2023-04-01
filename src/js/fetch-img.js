@@ -9,7 +9,7 @@ axios.interceptors.response.use(
     return response;
   },
   error => {
-    Notiflix.Notify.failure('Something went wrong. Please try again later.');
+    // Notiflix.Notify.failure('Something went wrong. Please try again later.');
     return Promise.reject(error);
   }
 );

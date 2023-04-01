@@ -1,5 +1,4 @@
 import Notiflix from 'notiflix';
-import simpleLightbox from 'simplelightbox';
 // Описаний в документації
 import SimpleLightbox from 'simplelightbox';
 // Додатковий імпорт стилів
@@ -9,12 +8,12 @@ import { fetchImages } from './fetch-img';
 
 const searchForm = document.querySelector('.search-form');
 const gallery = document.querySelector('.gallery');
+searchForm.addEventListener('submit', onSearchForm);
+window.addEventListener('scroll', showLoadMorePage);
 
 let page = 1;
 let per_page = 20;
 let query = '';
-
-searchForm.addEventListener('submit', onSearchForm);
 
 function renderGallery(images) {
   // Перевірка чи існує галерея перед вставкою даних
@@ -67,13 +66,11 @@ function onSearchForm(evt) {
   fetchImages(query, page, per_page)
     .then(data => {
       if (data.totalHits === 0) {
-        Notiflix.Notify.failure(
-          'Sorry, there are no images matching your search query. Please try again.'
-        );
+        alertNoImagesFound();
       } else {
         renderGallery(data.hits);
         simpleLightBox = new SimpleLightbox('.gallery a').refresh();
-        Notiflix.Notify.success(`Hooray! We found ${data.totalHits} images.`);
+        alertImagesFound(data);
       }
     })
     .catch(error => console.log(error))
@@ -81,6 +78,47 @@ function onSearchForm(evt) {
       searchForm.reset();
     });
 }
+
+function onloadMore() {
+  page += 1;
+  // simpleLightBox.destroy();
+  simpleLightBox.refresh();
+
+  fetchImages(query, page, per_page)
+    .then(data => {
+      renderGallery(data.hits);
+      simpleLightBox = new SimpleLightbox('.gallery a').refresh();
+
+      const totalPages = Math.ceil(data.totalHits / per_page);
+
+      if (page > totalPages) {
+        lertEndOfSearch();
+      }
+    })
+    .catch(error => console.log(error));
+}
+
+function checkIfEndOfPage() {
+  return (
+    window.innerHeight + window.pageYOffset >=
+    document.documentElement.scrollHeight
+  );
+}
+
+function showLoadMorePage() {
+  if (checkIfEndOfPage()) {
+    onloadMore();
+  }
+}
+
+// click TOP
+clickTop.onclick = function () {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+};
+
+window.addEventListener('scroll', function () {
+  clickTop.hidden = scrollY < document.documentElement.clientHeight;
+});
 
 // alert function
 function alertImagesFound(data) {
