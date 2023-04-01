@@ -215,17 +215,38 @@ padding-left: 15px;
 .info-item:not(:first-child) {
     margin-left: 5px;
 }
-#clickTop {
+
+#clickTop{
+
     font-size: 2.5em;
     position: fixed;
     bottom: 10px;
     right: 10px;
     cursor: pointer;
     z-index: 2;
-}
 
-#clickTop::before {
-    content: '🔝';
-    background-color: red;
-    border-radius: 50%;
+	color: rgba(0, 255, 0, .6);
+	padding-top:1.8em;
+	// display:inline-block;/* or block */
+	// position:relative;
+	border-color: rgba(0, 255, 0, .6);
+	text-decoration:none;
+	transition:all .3s ease-out;
+}
+#clickTop:before{
+	content:'▲';
+	font-size:.9em;
+	margin-left:-.7em;
+
+	border:solid .13em   rgba(0, 255, 0, .6);
+	border-radius:10em;
+	width:1.4em;
+	height:1.4em;
+	line-height:1.3em;
+	border-color:inherit;
+	transition:transform .5s ease-in;
+}
+#clickTop:hover{
+	color: #5f5;
+	border-color:#5f5;
 }
