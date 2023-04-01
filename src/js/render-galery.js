@@ -92,6 +92,7 @@ function onloadMore() {
 
       if (page > totalPages) {
         alertEndSearch();
+        return;
       }
     })
     .catch(error => console.log(error));
