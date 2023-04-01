@@ -91,7 +91,7 @@ function onloadMore() {
       const totalPages = Math.ceil(data.totalHits / per_page);
 
       if (page > totalPages) {
-        alertEndOfSearch();
+        alertEndSearch();
       }
     })
     .catch(error => console.log(error));
@@ -135,5 +135,9 @@ function alertNoImagesFound() {
     'Sorry, there are no images matching your search query. Please try again.'
   );
 }
-
+function alertEndSearch() {
+  Notiflix.Notify.failure(
+    "We're sorry, but you've reached the end of search results."
+  );
+}
 
