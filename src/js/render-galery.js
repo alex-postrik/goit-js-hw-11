@@ -135,5 +135,6 @@ function alertNoImagesFound() {
     'Sorry, there are no images matching your search query. Please try again.'
   );
 }
+var scroll = new SmoothScroll('a[href*="#"]');
 
 
