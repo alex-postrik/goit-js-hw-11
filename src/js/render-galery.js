@@ -81,7 +81,6 @@ function onSearchForm(evt) {
 
 function onloadMore() {
   page += 1;
-  // simpleLightBox.destroy();
   simpleLightBox.refresh();
 
   fetchImages(query, page, per_page)
@@ -92,7 +91,7 @@ function onloadMore() {
       const totalPages = Math.ceil(data.totalHits / per_page);
 
       if (page > totalPages) {
-        lertEndOfSearch();
+        alertEndOfSearch();
       }
     })
     .catch(error => console.log(error));
@@ -137,8 +136,4 @@ function alertNoImagesFound() {
   );
 }
 
-function alertEndOfSearch() {
-  Notiflix.Notify.failure(
-    "We're sorry, but you've reached the end of search results."
-  );
-}
+
