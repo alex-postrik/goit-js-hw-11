@@ -59,18 +59,22 @@ function onSearchForm(evt) {
   gallery.innerHTML = '';
 
   if (query === '') {
-    alertNoEmptySearch();
+    Notiflix.Notify.failure(
+      'The search string cannot be empty. Please specify your search query.'
+    );
     return;
   }
 
   fetchImages(query, page, per_page)
     .then(data => {
       if (data.totalHits === 0) {
-        alertNoImagesFound();
+        Notiflix.Notify.failure(
+          'Sorry, there are no images matching your search query. Please try again.'
+        );
       } else {
         renderGallery(data.hits);
         simpleLightBox = new SimpleLightbox('.gallery a').refresh();
-        alertImagesFound(data);
+        Notiflix.Notify.success(`Hooray! We found ${data.totalHits} images.`);
       }
     })
     .catch(error => console.log(error))
@@ -81,8 +85,7 @@ function onSearchForm(evt) {
 
 function onloadMore() {
   page += 1;
-  simpleLightBox.refresh();
-
+  simpleLightBox.destroy();
   fetchImages(query, page, per_page)
     .then(data => {
       renderGallery(data.hits);
@@ -91,7 +94,9 @@ function onloadMore() {
       const totalPages = Math.ceil(data.totalHits / per_page);
 
       if (page > totalPages) {
-        alertEndSearch();
+        Notiflix.Notify.failure(
+          "We're sorry, but you've reached the end of search results."
+        );
         return;
       }
     })
@@ -120,25 +125,6 @@ window.addEventListener('scroll', function () {
   clickTop.hidden = scrollY < document.documentElement.clientHeight;
 });
 
-// alert function
-function alertImagesFound(data) {
-  Notiflix.Notify.success(`Hooray! We found ${data.totalHits} images.`);
-}
 
-function alertNoEmptySearch() {
-  Notiflix.Notify.failure(
-    'The search string cannot be empty. Please specify your search query.'
-  );
-}
 
-function alertNoImagesFound() {
-  Notiflix.Notify.failure(
-    'Sorry, there are no images matching your search query. Please try again.'
-  );
-}
-function alertEndSearch() {
-  Notiflix.Notify.failure(
-    "We're sorry, but you've reached the end of search results."
-  );
-}
 
