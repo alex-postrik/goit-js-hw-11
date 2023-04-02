@@ -12,8 +12,9 @@ searchForm.addEventListener('submit', onSearchForm);
 window.addEventListener('scroll', showLoadMorePage);
 
 let page = 1;
-let per_page = 20;
+let per_page = 40;
 let query = '';
+let simpleLightBox;
 
 function renderGallery(images) {
   // Перевірка чи існує галерея перед вставкою даних
