@@ -7,25 +7,9 @@
     <link rel="stylesheet" href="./sass/index.scss" />
   </head>
   <body>
-    <div class="container">
-   <div class="search-container">
-      <form class="search-form" id="search-form">
-        <input type="text" name="searchQuery" autocomplete="off" placeholder="Search images..." />
-        <button type="submit">
-          <span class="material-icons">search</span>
-        </button>
-      </form>
-    </div>
-
-  <div class="conteiner-gallery">
-
-    <div class="gallery"></div>
-  </div>
-
-    <div id="clickTop" hidden></div>
-</div>
+   <!-- html -->
+   <include src="./partials/example.html"></include>
     <!-- script -->
-    <script type="module" src="./js/fetch-img.js"  type="module"></script>
-    <script type="module" src="./js/render-galery.js"  type="module"></script>
+    <script src="./js/render-galery.js" type="module"></script>
   </body>
 </html>
