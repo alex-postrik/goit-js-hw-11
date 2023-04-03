@@ -63,7 +63,6 @@ function onSearchForm(evt) {
     Notiflix.Notify.failure(
       'The search string cannot be empty. Please specify your search query.'
     );
-    return;
   }
 
   fetchImages(query, page, per_page)
