@@ -1,28 +1,17 @@
-// SmoothScroll({
-//   // Время скролла 400 = 0.4 секунды
-//   animationTime: 800,
-//   // Размер шага в пикселях
-//   stepSize: 75,
+SmoothScroll({
+  animationTime: 800,
+  stepSize: 75,
 
-//   // Дополнительные настройки:
+  accelerationDelta: 30,
+  accelerationMax: 2,
 
-//   // Ускорение
-//   accelerationDelta: 30,
-//   // Максимальное ускорение
-//   accelerationMax: 2,
+  keyboardSupport: true,
+  arrowScroll: 50,
 
-//   // Поддержка клавиатуры
-//   keyboardSupport: true,
-//   // Шаг скролла стрелками на клавиатуре в пикселях
-//   arrowScroll: 50,
+  pulseAlgorithm: true,
+  pulseScale: 4,
+  pulseNormalize: 1,
 
-//   // Pulse (less tweakable)
-//   // ratio of "tail" to "acceleration"
-//   pulseAlgorithm: true,
-//   pulseScale: 4,
-//   pulseNormalize: 1,
-
-//   // Поддержка тачпада
-//   touchpadSupport: true,
-// });
-var scroll = new SmoothScroll('a[href*="#"]');
+  touchpadSupport: true,
+});
+// var scroll = new SmoothScroll('a[href*="#"]');
