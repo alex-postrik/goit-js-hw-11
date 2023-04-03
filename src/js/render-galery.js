@@ -51,7 +51,19 @@ function renderGallery(images) {
     .join('');
 
   gallery.insertAdjacentHTML('beforeend', markup);
+
+  const { height: cardHeight } = document
+    .querySelector('.gallery')
+    .firstElementChild.getBoundingClientRect();
+
+  window.scrollBy({
+    top: cardHeight * 2,
+    behavior: 'smooth',
+  });
 }
+
+
+
 
 function onSearchForm(evt) {
   evt.preventDefault();
