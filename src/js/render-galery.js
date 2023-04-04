@@ -4,140 +4,124 @@ import SimpleLightbox from 'simplelightbox';
 // Додатковий імпорт стилів
 import 'simplelightbox/dist/simple-lightbox.min.css';
 
-import { fetchImages } from './fetch-img';
+import { fetchPictures } from './fetch-api';
 
 const searchForm = document.querySelector('.search-form');
 const gallery = document.querySelector('.gallery');
-searchForm.addEventListener('submit', onSearchForm);
-window.addEventListener('scroll', showLoadMorePage);
+const btnLoadMore = document.querySelector('.load-more');
+const inputForm = document.querySelector('input');
+
+searchForm.addEventListener('submit', handleSearch);
+btnLoadMore.addEventListener('click', handleLoadMore);
+
+btnLoadMore.style.display = 'none';
 
 let page = 1;
-let per_page = 40;
-let query = '';
-let simpleLightBox;
+let searchData = '';
+let hits = 0;
 
-function renderGallery(images) {
-  // Перевірка чи існує галерея перед вставкою даних
-  if (!gallery) {
-    return;
+// пошук картинок
+async function handleSearch(e) {
+  e.preventDefault();
+  clearGallery();
+  hideLoadMoreButton();
+
+  try {
+    searchData = inputForm.value.trim();
+    page = 1;
+
+    if (!searchData) {
+      return;
+    }
+
+    const response = await fetchPictures(searchData, page);
+    hits = response.hits.length;
+
+    if (response.totalHits > 40) {
+      showLoadMoreButton();
+    }
+
+    if (response.totalHits > 0) {
+      Notiflix.Notify.success(`Hooray! We found ${response.totalHits} images.`);
+
+      renderGallery(response.hits);
+    } else {
+      Notiflix.Notify.failure(
+        'Sorry, there are no images matching your search query. Please try again.'
+      );
+    }
+  } catch (error) {
+    console.error(error);
   }
+}
 
-  const markup = images
-    .map(image => {
-      const {
-        id,
-        largeImageURL,
-        webformatURL,
-        tags,
-        likes,
-        views,
-        comments,
-        downloads,
-      } = image;
-      return `
-        <a class="gallery__link" href="${largeImageURL}">
-          <div class="gallery-item" id="${id}">
-            <img class="gallery-item__img" src="${webformatURL}" alt="${tags}" loading="lazy" />
-            <div class="info">
-              <p class="info-item"><b>Likes</b>${likes}</p>
-              <p class="info-item"><b>Views</b>${views}</p>
-              <p class="info-item"><b>Comments</b>${comments}</p>
-              <p class="info-item"><b>Downloads</b>${downloads}</p>
-            </div>
-          </div>
-        </a>
-      `;
+// отримання картинок
+async function handleLoadMore() {
+  page += 1;
+
+  try {
+    const response = await fetchPictures(searchData, page);
+    renderGallery(response.hits);
+
+    hits += response.hits.length;
+    if (hits === response.totalHits) {
+      hideLoadMoreButton();
+      Notiflix.Notify.info(
+        "We're sorry, but you've reached the end of search results."
+      );
+    }
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// показати кнопку Load More
+function showLoadMoreButton() {
+  btnLoadMore.style.display = 'block';
+}
+
+// сховати кнопку Load More
+function hideLoadMoreButton() {
+  btnLoadMore.style.display = 'none';
+}
+
+// очищення розмітки
+function clearGallery() {
+  gallery.innerHTML = '';
+  hits = 0;
+}
+
+// рендер розмітки
+function renderGallery(hits) {
+  const galleryMarkup = hits
+    .map(hit => {
+      return `<div class="photo-card">
+      <a class="gallery__item" href="${hit.largeImageURL}" rel="noopener noreferrer">
+        <img class="gallery__image" src="${hit.webformatURL}" alt="${hit.tags}" loading="lazy" />
+        <div class="info">
+          <p class="info-item">
+            <b>Likes</b>${hit.likes}
+          </p>
+          <p class="info-item">
+            <b>Views</b>${hit.views}
+          </p>
+          <p class="info-item">
+            <b>Comments</b>${hit.comments}
+          </p>
+          <p class="info-item">
+            <b>Downloads</b>${hit.downloads}
+          </p>
+        </div>
+      </a>
+    </div>`;
     })
     .join('');
 
-  gallery.insertAdjacentHTML('beforeend', markup);
-
-  const { height: cardHeight } = document
-    .querySelector('.gallery')
-    .firstElementChild.getBoundingClientRect();
-
-  window.scrollBy({
-    top: cardHeight * 2,
-    behavior: 'smooth',
-  });
+  gallery.insertAdjacentHTML('beforeend', galleryMarkup);
+  simpleLightbox.refresh();
 }
 
-
-
-
-function onSearchForm(evt) {
-  evt.preventDefault();
-  page = 1;
-  query = evt.currentTarget.searchQuery.value.trim();
-  gallery.innerHTML = '';
-
-  if (query === '') {
-    Notiflix.Notify.failure(
-      'The search string cannot be empty. Please specify your search query.'
-    );
-  }
-
-  fetchImages(query, page, per_page)
-    .then(data => {
-      if (data.totalHits === 0) {
-        Notiflix.Notify.failure(
-          'Sorry, there are no images matching your search query. Please try again.'
-        );
-        return;
-      } else {
-        renderGallery(data.hits);
-        simpleLightBox = new SimpleLightbox('.gallery a').refresh();
-        Notiflix.Notify.success(`Hooray! We found ${data.totalHits} images.`);
-      }
-    })
-    .catch(error => console.log(error))
-    .finally(() => {
-      searchForm.reset();
-    });
-}
-
-function onloadMore() {
-  page += 1;
-  simpleLightBox.destroy();
-  fetchImages(query, page, per_page)
-    .then(data => {
-      renderGallery(data.hits);
-      simpleLightBox = new SimpleLightbox('.gallery a').refresh();
-
-      const totalPages = Math.ceil(data.totalHits / per_page);
-
-      if (page > totalPages) {
-        Notiflix.Notify.failure(
-          "We're sorry, but you've reached the end of search results."
-        );
-        return;
-      }
-    })
-    .catch(error => console.log(error));
-}
-
-function checkIfEndOfPage() {
-  return (
-    window.innerHeight + window.pageYOffset >=
-    document.documentElement.scrollHeight
-  );
-}
-
-function showLoadMorePage() {
-  if (checkIfEndOfPage()) {
-    onloadMore();
-  }
-}
-
-// click TOP
-clickTop.onclick = function () {
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-};
-
-window.addEventListener('scroll', function () {
-  clickTop.hidden = scrollY < document.documentElement.clientHeight;
+const simpleLightbox = new SimpleLightbox('.gallery a ', {
+  captionsData: 'alt',
+  captionDelay: 250,
 });
-
-
-
-
