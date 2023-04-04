@@ -273,38 +273,25 @@ margin-bottom: 20px;
 
 
 .load-more {
-    padding-top: 30px;
-       background: #222;
-    background: linear-gradient(#333, #222);
-    border: 1px solid #444;
-    border-left-color: #000;
-    box-shadow: 0 2px 0 #000;
-    color: #fff;
-    font-family: 'Cabin', helvetica, arial, sans-serif;
-    font-size: 13px;
-    font-weight: 400;
-    height: 40px;
-    line-height: 40px;
-    margin: 0;
+ 
     padding: 0;
      display: none;
   margin: 0 auto;
 
-    text-shadow: 0 -1px 0 #000;
     width: 120px;
 }
 
-.load-more :hover,
-.load-more :focus {
-    background: #292929;
-    background: linear-gradient(#393939, #292929);
-    color: #5f5;
-    outline: none;
-}
+// .load-more :hover,
+// .load-more :focus {
+//     background: #292929;
+//     background: linear-gradient(#393939, #292929);
+//     color: #5f5;
+//     outline: none;
+// }
 
-.load-more :active {
-    background: #292929;
-    background: linear-gradient(#393939, #292929);
-    box-shadow: 0 1px 0 #000, inset 1px 0 1px #222;
-    top: 1px;
-}
+// .load-more :active {
+//     background: #292929;
+//     background: linear-gradient(#393939, #292929);
+//     box-shadow: 0 1px 0 #000, inset 1px 0 1px #222;
+//     top: 1px;
+// }
