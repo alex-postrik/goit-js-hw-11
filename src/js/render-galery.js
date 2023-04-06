@@ -1,3 +1,4 @@
+
 import Notiflix from 'notiflix';
 // Описаний в документації
 import SimpleLightbox from 'simplelightbox';

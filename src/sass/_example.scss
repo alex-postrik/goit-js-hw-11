@@ -1,7 +1,7 @@
 .container {
+    z-index: 100;
 height: 100%;
 width: 100%;
-background: #151515;
 }
 .search-container {
 background: #151515;
@@ -30,10 +30,11 @@ text-align: center;
     top: 192px;
 }
 
-.search-container:after {
+.search-container:after:hover {
     background: #000;
     background: linear-gradient(left, #151515, #000, #151515);
     top: 191px;
+    color: #393;
 }
 
 .search-container form {
@@ -184,7 +185,7 @@ margin-bottom: 20px;
         overflow: hidden;
         transition: all 0.3s;
         border-radius: 30px;
-            background: #212121;
+
             box-shadow: 15px 15px 30px rgb(25, 25, 25),
                 -15px -15px 30px rgb(60, 60, 60);
     }
@@ -271,28 +272,3 @@ margin-bottom: 20px;
 	border-color:#5f5;
 }
 
-
-.load-more {
- 
-    padding: 0;
-     display: none;
-  margin: 0 auto;
-  cursor: pointer;
-height: 30px;
-    width: 120px;
-}
-
-// .load-more :hover,
-// .load-more :focus {
-//     background: #292929;
-//     background: linear-gradient(#393939, #292929);
-//     color: #5f5;
-//     outline: none;
-// }
-
-// .load-more :active {
-//     background: #292929;
-//     background: linear-gradient(#393939, #292929);
-//     box-shadow: 0 1px 0 #000, inset 1px 0 1px #222;
-//     top: 1px;
-// }
