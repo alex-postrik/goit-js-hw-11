@@ -15,8 +15,11 @@ const inputForm = document.querySelector('input');
 searchForm.addEventListener('submit', handleSearch);
 btnLoadMore.addEventListener('click', handleLoadMore);
 
-btnLoadMore.style.display = 'none';
 
+
+btnLoadMore.classList.add('.visually-hidden');
+
+console.log(btnLoadMore.classList);
 let page = 1;
 let searchData = '';
 let hits = 0;
@@ -78,12 +81,12 @@ async function handleLoadMore() {
 
 // показати кнопку Load More
 function showLoadMoreButton() {
-  btnLoadMore.style.display = 'block';
+  btnLoadMore.classList.add('.visually-hidden');
 }
 
 // сховати кнопку Load More
 function hideLoadMoreButton() {
-  btnLoadMore.style.display = 'none';
+  btnLoadMore.classList.remove('.visually-hidden');
 }
 
 // очищення розмітки
